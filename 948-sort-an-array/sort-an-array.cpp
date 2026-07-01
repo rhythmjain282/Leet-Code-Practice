@@ -1,43 +1,27 @@
 class Solution {
 private:
-    void merge(vector<int>& nums,int low,int mid,int high){
-        vector<int>temp;
-        int left = low;
-        int right = mid+1;
-        while(left<=mid && right<= high){
-            if(nums[left]>=nums[right]){
-                temp.push_back(nums[right]);
-                right++;
-            }
-            else{
-                temp.push_back(nums[left]);
-                left++;
-            }
-        }
-        while(left<=mid ){
-                temp.push_back(nums[left]);
-                left++;
-        }
-        while(right<= high){
-                temp.push_back(nums[right]);
-                right++;
-        }
-        for(int i = low;i<=high;i++){
-            nums[i] = temp[i-low];
-        }
-        return;
+int pindex(vector<int>&nums,int low,int high){
+    int left = low;
+    int right = high;
+    int pivot = nums[low];
+    while(left<right){
+        while(nums[left]<=pivot && left<=high-1) left++;
+        while(nums[right]>pivot && right>=low+1) right--;
+        if(left<right)swap(nums[left],nums[right]);
     }
-    void mergesort(vector<int>& nums,int low,int high) {
-        int l = low,h = high;
-        if(low>=high) return ;
-        int m = (low+high)/2;
-        mergesort(nums,low,m);
-        mergesort(nums,m+1,high);
-        merge(nums,low,m,high);
+    swap(nums[right],nums[low]);
+    return right;
+}
+    void qs(vector<int>&nums,int low,int high){
+        if(low<high){
+            int ind = pindex(nums,low,high);
+            qs(nums,low,ind-1);
+            qs(nums,ind+1,high);
+        }
     }
 public:
     vector<int>sortArray(vector<int>&nums){
-        mergesort(nums,0,nums.size()-1);
+        qs(nums,0,nums.size()-1);
         return nums;
     }
 };
