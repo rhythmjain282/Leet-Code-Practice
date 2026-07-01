@@ -14,11 +14,14 @@ public:
 public:
     int countNumbersWithUniqueDigits(int n) {
         if(n == 0) return 1;
-        int ans = 0;
-        while(n>=0){
-            ans = ans + numbers(n);
-            n--;
+        int availdigi = 9;
+        int currentcases = 9;
+        int cnt = 10;
+        for(int i = 2;i<=n;i++){
+            currentcases = currentcases*availdigi;
+            cnt = cnt+currentcases;
+            availdigi--;
         }
-        return ans;
+        return cnt;
     }
 };
